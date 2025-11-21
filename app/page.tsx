@@ -31,7 +31,28 @@ export default function HomePage() {
 
       <div className="relative z-10 container mx-auto px-4 py-12">
         {/* Header with theme toggle */}
-        <div className="flex justify-between items-start mb-16">
+        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-16">
+          <motion.div
+            className="flex items-center gap-3 animate-fade-in-delay-2 sm:hidden justify-center w-full mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
+            <div className="flex items-center gap-3">
+              <Link href="/admin">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 hover:scale-105"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="hidden sm:inline">Admin</span>
+                </Button>
+              </Link>
+              <ThemeToggle />
+            </div>
+          </motion.div>
+
           <header className="text-center flex-1">
             <motion.h1
               className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent mb-4"
@@ -53,6 +74,7 @@ export default function HomePage() {
             </motion.p>
           </header>
           <motion.div
+            className="hidden sm:block"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.4 }}

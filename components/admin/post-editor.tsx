@@ -290,7 +290,7 @@ export function PostEditor({ editingPostId, onBack }: PostEditorProps) {
               id="content-editor"
               placeholder="Cuenta tu historia... 
 
-Puedes usar Markdown:
+Puedes usar Markdow
 - **negrita** o *cursiva*
 - [enlaces](https://ejemplo.com)
 - \`\`\`código\`\`\`

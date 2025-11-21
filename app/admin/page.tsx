@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AdminHeader } from "@/components/admin/admin-header"
-import { PostEditor } from "@/components/admin/post-editor"
-import { PostsList } from "@/components/admin/posts-list"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { AdminHeader } from "@/components/admin/admin-header";
+import { PostEditor } from "@/components/admin/post-editor";
+import { PostsList } from "@/components/admin/posts-list";
+import { motion } from "framer-motion";
 
 export default function AdminPage() {
-  const [activeView, setActiveView] = useState<"editor" | "posts">("posts")
-  const [editingPost, setEditingPost] = useState<string | null>(null)
+  const [activeView, setActiveView] = useState<"editor" | "posts">("posts");
+  const [editingPost, setEditingPost] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -22,21 +22,24 @@ export default function AdminPage() {
           transition={{ duration: 0.3 }}
         >
           {activeView === "editor" ? (
-            <PostEditor editingPostId={editingPost} onBack={() => setActiveView("posts")} />
+            <PostEditor
+              editingPostId={editingPost}
+              onBack={() => setActiveView("posts")}
+            />
           ) : (
             <PostsList
               onEditPost={(id) => {
-                setEditingPost(id)
-                setActiveView("editor")
+                setEditingPost(id);
+                setActiveView("editor");
               }}
               onNewPost={() => {
-                setEditingPost(null)
-                setActiveView("editor")
+                setEditingPost(null);
+                setActiveView("editor");
               }}
             />
           )}
         </motion.div>
       </main>
     </div>
-  )
+  );
 }
