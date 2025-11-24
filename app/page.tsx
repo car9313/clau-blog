@@ -29,7 +29,7 @@ export default function HomePage() {
         <div className="absolute top-40 left-40 w-80 h-80 bg-indigo-300 dark:bg-indigo-600 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-12">
+      <div className="relative z-10 container mx-auto px-4 py-6">
         {/* Header with theme toggle */}
         <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-16">
           <motion.div
@@ -38,7 +38,7 @@ export default function HomePage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Link href="/admin">
                 <Button
                   variant="outline"

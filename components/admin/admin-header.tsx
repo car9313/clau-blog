@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { PenTool, FileText, Home, User } from "lucide-react";
 import { Button } from "@/components/ui/button";

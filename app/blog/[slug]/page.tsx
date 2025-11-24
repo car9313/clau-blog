@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Clock, User, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { MarkdownContent } from "@/components/markdown-content"; // Nuevo componente
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -19,7 +20,6 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  console.log(slug);
   const post = getPostBySlug(slug);
 
   if (!post) {
@@ -97,9 +97,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
 
-          <div className="prose prose-lg prose-slate dark:prose-invert max-w-none animate-fade-in-up animation-delay-300">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </div>
+          {/* CONTENIDO ACTUALIZADO */}
+          <MarkdownContent content={post.content} />
         </article>
       </div>
     </div>

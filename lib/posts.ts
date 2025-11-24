@@ -1,4 +1,4 @@
-interface Post {
+/* interface Post {
   slug: string;
   title: string;
   excerpt: string;
@@ -9,748 +9,555 @@ interface Post {
   tags: string[];
   category: string; // Añadir esta línea
 }
+ */
+export interface Post {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  author: string;
+  tags: string[];
+  readTime: string;
+  date: string;
+  published: boolean;
+}
 
-const posts: Post[] = [
+export const posts: Post[] = [
   {
+    id: "1",
     slug: "introduccion-react-hooks",
-    title: "Guía Completa de React Hooks: useState, useEffect y más",
-    excerpt:
-      "Aprende a usar los React Hooks más importantes para crear componentes funcionales poderosos y reutilizables.",
-    date: "15 Dic 2024",
-    author: "María García",
-    readTime: "8 min",
-    tags: ["React", "JavaScript", "Frontend"],
-    content: `
-      <h2>¿Qué son los React Hooks?</h2>
-      <p>Los React Hooks son funciones especiales que te permiten "enganchar" el estado y otras características de React desde componentes funcionales. Fueron introducidos en React 16.8 y han revolucionado la forma en que escribimos componentes.</p>
-      
-      <h3>useState: Manejando el Estado</h3>
-      <p>El hook <code>useState</code> te permite agregar estado a componentes funcionales:</p>
-      <pre><code>import React, { useState } from 'react';
+    title: "Introducción a React Hooks: useState y useEffect",
+    excerpt: "Aprende los fundamentos de los Hooks más importantes de React y cómo transformarán tu forma de escribir componentes.",
+    content: `# Introducción a React Hooks
 
-function Contador() {
+Los Hooks son una característica de React que nos permite usar estado y otras características de React sin escribir una clase. En este artículo exploraremos los dos hooks más importantes: **useState** y **useEffect**.
+
+## ¿Qué es useState?
+
+\`useState\` es un hook que nos permite agregar estado a componentes funcionales. Veamos un ejemplo básico:
+
+\`\`\`jsx
+import { useState } from 'react';
+
+function Counter() {
   const [count, setCount] = useState(0);
 
   return (
-    &lt;div&gt;
-      &lt;p&gt;Has hecho clic {count} veces&lt;/p&gt;
-      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
-        Hacer clic
-      &lt;/button&gt;
-    &lt;/div&gt;
+    <div>
+      <p>Has hecho click {count} veces</p>
+      <button onClick={() => setCount(count + 1)}>
+        Haz click aquí
+      </button>
+    </div>
   );
-}</code></pre>
-
-      <h3>useEffect: Efectos Secundarios</h3>
-      <p>El hook <code>useEffect</code> te permite realizar efectos secundarios en componentes funcionales. Es equivalente a <code>componentDidMount</code>, <code>componentDidUpdate</code> y <code>componentWillUnmount</code> combinados.</p>
-      
-      <pre><code>import React, { useState, useEffect } from 'react';
-
-function Ejemplo() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() =&gt; {
-    document.title = \`Has hecho clic \${count} veces\`;
-  });
-
-  return (
-    &lt;div&gt;
-      &lt;p&gt;Has hecho clic {count} veces&lt;/p&gt;
-      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
-        Hacer clic
-      &lt;/button&gt;
-    &lt;/div&gt;
-  );
-}</code></pre>
-
-      <h3>Reglas de los Hooks</h3>
-      <ul>
-        <li>Solo llama Hooks en el nivel superior de tus funciones React</li>
-        <li>Solo llama Hooks desde componentes funcionales de React</li>
-        <li>Los nombres de los Hooks personalizados deben comenzar con "use"</li>
-      </ul>
-
-      <h3>Conclusión</h3>
-      <p>Los React Hooks han simplificado enormemente el desarrollo con React, permitiendo que los componentes funcionales tengan todas las capacidades que antes solo tenían los componentes de clase.</p>
-    `,
-    category: "Frontend",
-  },
-  {
-    slug: "nextjs-app-router-guia",
-    title: "Next.js 14 App Router: La Nueva Era del Desarrollo Web",
-    excerpt:
-      "Descubre las ventajas del nuevo App Router de Next.js y cómo migrar tus proyectos para aprovechar al máximo sus características.",
-    date: "12 Dic 2024",
-    author: "Carlos Rodríguez",
-    readTime: "12 min",
-    tags: ["Next.js", "React", "Full-stack"],
-    content: `
-      <h2>¿Qué es el App Router?</h2>
-      <p>El App Router es la nueva forma de manejar el routing en Next.js 13+. Está construido sobre React Server Components y ofrece un modelo mental más simple y poderoso para crear aplicaciones web.</p>
-
-      <h3>Estructura de Carpetas</h3>
-      <p>Con el App Router, la estructura de tu aplicación se basa en carpetas dentro del directorio <code>app/</code>:</p>
-      <pre><code>app/
-├── page.tsx          # Página principal (/)
-├── about/
-│   └── page.tsx      # Página about (/about)
-├── blog/
-│   ├── page.tsx      # Lista de posts (/blog)
-│   └── [slug]/
-│       └── page.tsx  # Post individual (/blog/[slug])
-└── layout.tsx        # Layout raíz</code></pre>
-
-      <h3>Server Components por Defecto</h3>
-      <p>Una de las mayores ventajas del App Router es que los componentes son Server Components por defecto. Esto significa:</p>
-      <ul>
-        <li>Mejor rendimiento inicial</li>
-        <li>Menor bundle size en el cliente</li>
-        <li>Acceso directo a bases de datos y APIs</li>
-        <li>Mejor SEO</li>
-      </ul>
-
-      <h3>Layouts Anidados</h3>
-      <p>Los layouts se pueden anidar automáticamente:</p>
-      <pre><code>// app/layout.tsx
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    &lt;html lang="es"&gt;
-      &lt;body&gt;
-        &lt;nav&gt;Navegación global&lt;/nav&gt;
-        {children}
-      &lt;/body&gt;
-    &lt;/html&gt;
-  )
-}</code></pre>
-
-      <h3>Loading y Error States</h3>
-      <p>El App Router incluye convenciones especiales para manejar estados de carga y error:</p>
-      <ul>
-        <li><code>loading.tsx</code> - Mostrado mientras se carga la página</li>
-        <li><code>error.tsx</code> - Mostrado cuando ocurre un error</li>
-        <li><code>not-found.tsx</code> - Mostrado para rutas 404</li>
-      </ul>
-
-      <h3>Migración desde Pages Router</h3>
-      <p>La migración puede ser gradual. Puedes mantener ambos sistemas funcionando al mismo tiempo y migrar página por página.</p>
-
-      <h3>Conclusión</h3>
-      <p>El App Router representa el futuro de Next.js, ofreciendo mejor rendimiento, DX mejorada y características más poderosas para aplicaciones modernas.</p>
-    `,
-    category: "Full-stack",
-  },
-  {
-    slug: "css-grid-flexbox-2024",
-    title: "CSS Grid vs Flexbox: Cuándo Usar Cada Uno en 2024",
-    excerpt:
-      "Una guía práctica para decidir entre CSS Grid y Flexbox según el tipo de layout que necesites crear.",
-    date: "10 Dic 2024",
-    author: "Ana Martínez",
-    readTime: "10 min",
-    tags: ["CSS", "Layout", "Frontend"],
-    content: `
-      <h2>La Diferencia Fundamental</h2>
-      <p>Aunque tanto CSS Grid como Flexbox son herramientas de layout, tienen propósitos diferentes:</p>
-      <ul>
-        <li><strong>Flexbox</strong>: Diseñado para layouts unidimensionales (filas o columnas)</li>
-        <li><strong>CSS Grid</strong>: Diseñado para layouts bidimensionales (filas y columnas simultáneamente)</li>
-      </ul>
-
-      <h3>Cuándo Usar Flexbox</h3>
-      <p>Flexbox es ideal para:</p>
-      <ul>
-        <li>Centrar elementos vertical y horizontalmente</li>
-        <li>Distribuir espacio entre elementos</li>
-        <li>Crear navegaciones horizontales</li>
-        <li>Alinear elementos en una sola dimensión</li>
-      </ul>
-
-      <pre><code>.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
 }
+\`\`\`
 
-.item {
-  flex: 1; /* Los elementos crecen igualmente */
-}</code></pre>
+## ¿Qué es useEffect?
 
-      <h3>Cuándo Usar CSS Grid</h3>
-      <p>CSS Grid es perfecto para:</p>
-      <ul>
-        <li>Layouts de página completos</li>
-        <li>Grillas de tarjetas o productos</li>
-        <li>Layouts complejos con áreas definidas</li>
-        <li>Cuando necesitas control sobre filas y columnas</li>
-      </ul>
+\`useEffect\` nos permite realizar efectos secundarios en componentes funcionales. Es similar a \`componentDidMount\`, \`componentDidUpdate\` y \`componentWillUnmount\` en componentes de clase.
 
-      <pre><code>.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
+\`\`\`jsx
+import { useState, useEffect } from 'react';
 
-.layout {
-  display: grid;
-  grid-template-areas: 
-    "header header"
-    "sidebar main"
-    "footer footer";
-  grid-template-columns: 250px 1fr;
-}</code></pre>
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-      <h3>Combinando Ambos</h3>
-      <p>No tienes que elegir uno u otro. Muchas veces la mejor solución es combinar ambos:</p>
-      <pre><code>/* Grid para el layout general */
-.page {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-}
-
-/* Flexbox para componentes internos */
-.card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}</code></pre>
-
-      <h3>Casos de Uso Comunes</h3>
-      <h4>Navbar (Flexbox)</h4>
-      <pre><code>.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}</code></pre>
-
-      <h4>Galería de Imágenes (Grid)</h4>
-      <pre><code>.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}</code></pre>
-
-      <h3>Conclusión</h3>
-      <p>La clave está en entender que Flexbox y Grid son complementarios. Usa Flexbox para componentes y Grid para layouts. Con la práctica, sabrás instintivamente cuál usar en cada situación.</p>
-    `,
-    category: "Frontend",
-  },
-  {
-    slug: "javascript-async-await-promesas",
-    title: "Dominando JavaScript Asíncrono: Promesas, Async/Await y Más",
-    excerpt:
-      "Todo lo que necesitas saber sobre programación asíncrona en JavaScript moderno, desde callbacks hasta async/await.",
-    date: "8 Dic 2024",
-    author: "Diego López",
-    readTime: "15 min",
-    tags: ["JavaScript", "Async", "Promesas"],
-    content: `
-      <h2>¿Por Qué JavaScript Asíncrono?</h2>
-      <p>JavaScript es un lenguaje de un solo hilo, pero necesitamos realizar operaciones que toman tiempo (llamadas a APIs, lectura de archivos, etc.) sin bloquear la interfaz de usuario.</p>
-
-      <h3>Evolución: De Callbacks a Async/Await</h3>
-      
-      <h4>1. Callbacks (El Pasado)</h4>
-      <pre><code>// Callback Hell 😱
-getData(function(a) {
-  getMoreData(a, function(b) {
-    getEvenMoreData(b, function(c) {
-      // ¡Demasiado anidamiento!
-    });
-  });
-});</code></pre>
-
-      <h4>2. Promesas (El Presente)</h4>
-      <pre><code>// Mucho más limpio
-getData()
-  .then(a =&gt; getMoreData(a))
-  .then(b =&gt; getEvenMoreData(b))
-  .then(c =&gt; {
-    // ¡Código limpio!
-  })
-  .catch(error =&gt; {
-    console.error('Error:', error);
-  });</code></pre>
-
-      <h4>3. Async/Await (El Futuro)</h4>
-      <pre><code>// Como código síncrono
-async function fetchData() {
-  try {
-    const a = await getData();
-    const b = await getMoreData(a);
-    const c = await getEvenMoreData(b);
-    return c;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}</code></pre>
-
-      <h3>Creando Promesas</h3>
-      <pre><code>function delay(ms) {
-  return new Promise(resolve =&gt; {
-    setTimeout(resolve, ms);
-  });
-}
-
-// Uso
-delay(1000).then(() =&gt; {
-  console.log('¡Un segundo después!');
-});</code></pre>
-
-      <h3>Manejo de Múltiples Promesas</h3>
-      
-      <h4>Promise.all() - Todas o ninguna</h4>
-      <pre><code>const promesas = [
-  fetch('/api/users'),
-  fetch('/api/posts'),
-  fetch('/api/comments')
-];
-
-try {
-  const resultados = await Promise.all(promesas);
-  // Todas las promesas se resolvieron
-} catch (error) {
-  // Si cualquiera falla, se ejecuta este catch
-}</code></pre>
-
-      <h4>Promise.allSettled() - Todas, sin importar el resultado</h4>
-      <pre><code>const resultados = await Promise.allSettled(promesas);
-resultados.forEach((resultado, index) =&gt; {
-  if (resultado.status === 'fulfilled') {
-    console.log(\`Promesa \${index} exitosa:\`, resultado.value);
-  } else {
-    console.log(\`Promesa \${index} falló:\`, resultado.reason);
-  }
-});</code></pre>
-
-      <h3>Patrones Comunes</h3>
-      
-      <h4>Retry con Exponential Backoff</h4>
-      <pre><code>async function fetchWithRetry(url, maxRetries = 3) {
-  for (let i = 0; i &lt; maxRetries; i++) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) return response;
-    } catch (error) {
-      if (i === maxRetries - 1) throw error;
-      await delay(Math.pow(2, i) * 1000); // 1s, 2s, 4s
+  useEffect(() => {
+    // Este efecto se ejecuta después de cada renderizado
+    async function fetchUser() {
+      setLoading(true);
+      const response = await fetch(\`/api/users/\${userId}\`);
+      const userData = await response.json();
+      setUser(userData);
+      setLoading(false);
     }
-  }
-}</code></pre>
 
-      <h4>Timeout para Promesas</h4>
-      <pre><code>function withTimeout(promise, ms) {
-  const timeout = new Promise((_, reject) =&gt;
-    setTimeout(() =&gt; reject(new Error('Timeout')), ms)
+    fetchUser();
+  }, [userId]); // Solo se re-ejecuta si userId cambia
+
+  if (loading) return <div>Cargando...</div>;
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>{user.email}</p>
+    </div>
   );
-  
-  return Promise.race([promise, timeout]);
 }
+\`\`\`
 
-// Uso
-try {
-  const data = await withTimeout(fetch('/api/slow'), 5000);
-} catch (error) {
-  console.log('La petición tardó más de 5 segundos');
-}</code></pre>
+## Combinando ambos Hooks
 
-      <h3>Errores Comunes</h3>
+Aquí tienes un ejemplo más complejo que combina ambos hooks:
+
+\`\`\`jsx
+import { useState, useEffect } from 'react';
+
+function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    // Cargar todos del localStorage al montar el componente
+    const savedTodos = localStorage.getItem('todos');
+    if (savedTodos) {
+      setTodos(JSON.parse(savedTodos));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Guardar en localStorage cuando los todos cambien
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const addTodo = () => {
+    if (inputValue.trim()) {
+      setTodos([...todos, {
+        id: Date.now(),
+        text: inputValue,
+        completed: false
+      }]);
+      setInputValue('');
+    }
+  };
+
+  return (
+    <div>
+      <h1>Lista de Tareas</h1>
+      <input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Nueva tarea..."
+      />
+      <button onClick={addTodo}>Agregar</button>
       <ul>
-        <li><strong>Olvidar await</strong>: <code>const data = fetchData()</code> devuelve una Promise, no los datos</li>
-        <li><strong>No manejar errores</strong>: Siempre usa try/catch con async/await</li>
-        <li><strong>Await innecesario</strong>: <code>return await promise</code> es redundante en la mayoría de casos</li>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
       </ul>
+    </div>
+  );
+}
+\`\`\`
 
-      <h3>Conclusión</h3>
-      <p>El JavaScript asíncrono es fundamental en el desarrollo moderno. Async/await hace que el código asíncrono sea más legible y mantenible, pero es importante entender las promesas que hay debajo.</p>
-    `,
-    category: "JavaScript",
+## Conclusión
+
+Los Hooks han revolucionado la forma en que escribimos componentes en React. \`useState\` y \`useEffect\` son solo el comienzo - hay muchos más hooks por explorar!`,
+    category: "React",
+    author: "Carlos García",
+    tags: ["react", "hooks", "javascript", "frontend"],
+    readTime: "8 min",
+    date: "2024-01-15",
+    published: true
   },
   {
-    slug: "typescript-para-javascript-developers",
-    title: "TypeScript para Desarrolladores JavaScript: Guía de Migración",
-    excerpt:
-      "Aprende cómo migrar gradualmente tus proyectos JavaScript a TypeScript y aprovecha los beneficios del tipado estático.",
-    date: "5 Dic 2024",
-    author: "Laura Fernández",
-    readTime: "11 min",
-    tags: ["TypeScript", "JavaScript", "Migración"],
-    content: `
-      <h2>¿Por Qué TypeScript?</h2>
-      <p>TypeScript añade tipado estático a JavaScript, lo que significa:</p>
-      <ul>
-        <li>Detección de errores en tiempo de desarrollo</li>
-        <li>Mejor autocompletado en el IDE</li>
-        <li>Refactoring más seguro</li>
-        <li>Documentación automática del código</li>
-      </ul>
+    id: "2",
+    slug: "typescript-tips-desarrollo",
+    title: "TypeScript Tips para un Desarrollo Más Robusto",
+    excerpt: "Descubre cómo TypeScript puede mejorar la calidad de tu código y prevenir errores comunes antes de que lleguen a producción.",
+    content: `# TypeScript Tips para un Desarrollo Más Robusto
 
-      <h3>Configuración Inicial</h3>
-      <pre><code># Instalar TypeScript
-npm install -D typescript @types/node
+TypeScript se ha convertido en el estándar para el desarrollo de aplicaciones JavaScript a gran escala. En este artículo veremos tips prácticos para sacarle el máximo provecho.
 
-# Crear tsconfig.json
-npx tsc --init</code></pre>
+## Tipado Estricto: Tu Mejor Amigo
 
-      <h4>tsconfig.json básico</h4>
-      <pre><code>{
+Activar el modo estricto en tu \`tsconfig.json\` es el primer paso hacia código más seguro:
+
+\`\`\`json
+{
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
     "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
-}</code></pre>
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}
+\`\`\`
 
-      <h3>Tipos Básicos</h3>
-      <pre><code>// Primitivos
-let nombre: string = "Juan";
-let edad: number = 25;
-let activo: boolean = true;
+## Interfaces vs Types
 
-// Arrays
-let numeros: number[] = [1, 2, 3];
-let nombres: Array&lt;string&gt; = ["Ana", "Luis"];
+¿Cuándo usar interfaces y cuándo usar types? Aquí una guía práctica:
 
-// Objetos
-interface Usuario {
+\`\`\`typescript
+// Usa interfaces para objetos y clases
+interface User {
   id: number;
-  nombre: string;
-  email?: string; // Opcional
-}
-
-const usuario: Usuario = {
-  id: 1,
-  nombre: "María"
-};</code></pre>
-
-      <h3>Funciones Tipadas</h3>
-      <pre><code>// Función con tipos
-function saludar(nombre: string): string {
-  return \`Hola, \${nombre}!\`;
-}
-
-// Arrow function
-const multiplicar = (a: number, b: number): number =&gt; a * b;
-
-// Función async
-async function obtenerUsuario(id: number): Promise&lt;Usuario&gt; {
-  const response = await fetch(\`/api/users/\${id}\`);
-  return response.json();
-}</code></pre>
-
-      <h3>Interfaces vs Types</h3>
-      <pre><code>// Interface (extensible)
-interface Animal {
-  nombre: string;
-}
-
-interface Perro extends Animal {
-  raza: string;
-}
-
-// Type (más flexible)
-type Color = "rojo" | "verde" | "azul";
-type Coordenada = [number, number];
-
-// Union types
-type EstadoRequest = "loading" | "success" | "error";</code></pre>
-
-      <h3>Generics</h3>
-      <pre><code>// Función genérica
-function identidad&lt;T&gt;(arg: T): T {
-  return arg;
-}
-
-// Interface genérica
-interface ApiResponse&lt;T&gt; {
-  data: T;
-  status: number;
-  message: string;
-}
-
-// Uso
-const respuestaUsuario: ApiResponse&lt;Usuario&gt; = {
-  data: { id: 1, nombre: "Pedro" },
-  status: 200,
-  message: "OK"
-};</code></pre>
-
-      <h3>Utility Types</h3>
-      <pre><code>interface Usuario {
-  id: number;
-  nombre: string;
-  email: string;
-  password: string;
-}
-
-// Partial - Hace todas las propiedades opcionales
-type UsuarioActualizar = Partial&lt;Usuario&gt;;
-
-// Pick - Selecciona propiedades específicas
-type UsuarioPublico = Pick&lt;Usuario, "id" | "nombre"&gt;;
-
-// Omit - Excluye propiedades específicas
-type UsuarioSinPassword = Omit&lt;Usuario, "password"&gt;;</code></pre>
-
-      <h3>Migración Gradual</h3>
-      <h4>Paso 1: Renombrar archivos</h4>
-      <pre><code># De .js a .ts
-mv archivo.js archivo.ts
-
-# Para archivos con JSX
-mv componente.jsx componente.tsx</code></pre>
-
-      <h4>Paso 2: Añadir tipos gradualmente</h4>
-      <pre><code>// Antes (JavaScript)
-function calcularTotal(items) {
-  return items.reduce((sum, item) =&gt; sum + item.price, 0);
-}
-
-// Después (TypeScript)
-interface Item {
-  price: number;
   name: string;
+  email: string;
+  age?: number; // Propiedad opcional
 }
 
-function calcularTotal(items: Item[]): number {
-  return items.reduce((sum, item) =&gt; sum + item.price, 0);
-}</code></pre>
+interface Admin extends User {
+  permissions: string[];
+}
 
-      <h3>Consejos para la Migración</h3>
-      <ul>
-        <li>Empieza con <code>"strict": false</code> y actívalo gradualmente</li>
-        <li>Usa <code>any</code> temporalmente para código complejo</li>
-        <li>Instala <code>@types/</code> para librerías de terceros</li>
-        <li>Configura tu IDE para aprovechar TypeScript al máximo</li>
-      </ul>
+// Usa types para uniones, tuplas y mapeos
+type Status = 'pending' | 'success' | 'error';
 
-      <h3>Errores Comunes</h3>
-      <ul>
-        <li><strong>Sobre-tipar</strong>: No todo necesita tipos explícitos</li>
-        <li><strong>Usar any</strong>: Evítalo en código de producción</li>
-        <li><strong>Ignorar null/undefined</strong>: Usa optional chaining (?.) y nullish coalescing (??)</li>
-      </ul>
+type ApiResponse<T> = {
+  data: T;
+  status: Status;
+  timestamp: Date;
+};
 
-      <h3>Conclusión</h3>
-      <p>TypeScript mejora significativamente la experiencia de desarrollo y la calidad del código. La migración puede ser gradual, permitiendo adoptar TypeScript a tu propio ritmo.</p>
-    `,
-    category: "JavaScript",
+type UserRole = 'admin' | 'user' | 'guest';
+
+// Función con tipos genéricos
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user: User = {
+  id: 1,
+  name: 'Juan',
+  email: 'juan@example.com'
+};
+
+const userName = getProperty(user, 'name'); // Tipo: string
+\`\`\`
+
+## Manejo Seguro de Datos Externos
+
+Cuando trabajas con APIs, valida los datos que recibes:
+
+\`\`\`typescript
+// Zod para validación en runtime
+import { z } from 'zod';
+
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string().min(1),
+  email: z.string().email(),
+  age: z.number().optional()
+});
+
+type User = z.infer<typeof UserSchema>;
+
+async function fetchUser(userId: number): Promise<User> {
+  const response = await fetch(\`/api/users/\${userId}\`);
+  const data = await response.json();
+  
+  try {
+    return UserSchema.parse(data);
+  } catch (error) {
+    throw new Error('Datos de usuario inválidos');
+  }
+}
+
+// Type guards personalizados
+function isUser(data: unknown): data is User {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'id' in data &&
+    'name' in data &&
+    'email' in data
+  );
+}
+\`\`\`
+
+## Utilidades Avanzadas de Types
+
+TypeScript ofrece poderosas utilidades para transformar tipos:
+
+\`\`\`typescript
+// Utilidades built-in
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  inStock: boolean;
+}
+
+// Hacer todas las propiedades opcionales
+type PartialProduct = Partial<Product>;
+
+// Seleccionar propiedades específicas
+type ProductPreview = Pick<Product, 'id' | 'name' | 'price'>;
+
+// Omitir propiedades
+type ProductWithoutId = Omit<Product, 'id'>;
+
+// Tipos condicionales
+type IsString<T> = T extends string ? true : false;
+
+type A = IsString<string>; // true
+type B = IsString<number>; // false
+
+// Mapped types para crear utilidades personalizadas
+type Getters<T> = {
+  [K in keyof T as \`get\${Capitalize<string & K>}\`]: () => T[K];
+};
+
+type ProductGetters = Getters<Product>;
+// Equivale a:
+// {
+//   getId: () => number;
+//   getName: () => string;
+//   getPrice: () => number;
+//   // ...
+// }
+\`\`\`
+
+## Conclusión
+
+TypeScript no solo agrega tipos, sino que transforma la forma en que diseñamos y pensamos sobre nuestro código. Estos tips te ayudarán a escribir código más mantenible y menos propenso a errores.`,
+    category: "TypeScript",
+    author: "Ana Martínez",
+    tags: ["typescript", "tipado", "javascript", "desarrollo"],
+    readTime: "10 min",
+    date: "2024-01-12",
+    published: true
   },
   {
-    slug: "web-performance-optimization-2024",
-    title: "Optimización de Performance Web: Técnicas Avanzadas para 2024",
-    excerpt:
-      "Estrategias modernas para mejorar la velocidad de carga y la experiencia de usuario en aplicaciones web.",
-    date: "3 Dic 2024",
-    author: "Roberto Silva",
-    readTime: "13 min",
-    tags: ["Performance", "Web Vitals", "Optimización"],
-    content: `
-      <h2>Core Web Vitals: Las Métricas que Importan</h2>
-      <p>Google ha definido tres métricas clave para medir la experiencia de usuario:</p>
-      <ul>
-        <li><strong>LCP (Largest Contentful Paint)</strong>: Tiempo de carga del elemento más grande (&lt; 2.5s)</li>
-        <li><strong>FID (First Input Delay)</strong>: Tiempo de respuesta a la primera interacción (&lt; 100ms)</li>
-        <li><strong>CLS (Cumulative Layout Shift)</strong>: Estabilidad visual durante la carga (&lt; 0.1)</li>
-      </ul>
+    id: "3",
+    slug: "tailwind-css-componentes-reutilizables",
+    title: "Creando Componentes Reutilizables con Tailwind CSS",
+    excerpt: "Aprende a construir una biblioteca de componentes consistentes y mantenibles utilizando las mejores prácticas de Tailwind CSS.",
+    content: `# Creando Componentes Reutilizables con Tailwind CSS
 
-      <h3>Optimización de Imágenes</h3>
-      <h4>Formatos Modernos</h4>
-      <pre><code>&lt;picture&gt;
-  &lt;source srcset="imagen.avif" type="image/avif"&gt;
-  &lt;source srcset="imagen.webp" type="image/webp"&gt;
-  &lt;img src="imagen.jpg" alt="Descripción" loading="lazy"&gt;
-&lt;/picture&gt;</code></pre>
+Tailwind CSS es famoso por su utilidad-first, pero ¿cómo crear componentes mantenibles y reutilizables? En este artículo exploraremos patrones avanzados.
 
-      <h4>Responsive Images</h4>
-      <pre><code>&lt;img 
-  src="imagen-800w.jpg"
-  srcset="imagen-400w.jpg 400w,
-          imagen-800w.jpg 800w,
-          imagen-1200w.jpg 1200w"
-  sizes="(max-width: 600px) 400px,
-         (max-width: 1000px) 800px,
-         1200px"
-  alt="Imagen responsive"
-  loading="lazy"
-&gt;</code></pre>
+## Patrones de Componentes con Tailwind
 
-      <h3>Code Splitting y Lazy Loading</h3>
-      <h4>Dynamic Imports</h4>
-      <pre><code>// Lazy loading de componentes
-const LazyComponent = React.lazy(() =&gt; import('./LazyComponent'));
+### 1. Componente Button Reutilizable
+
+\`\`\`jsx
+// components/Button.jsx
+const Button = ({ 
+  children, 
+  variant = 'primary', 
+  size = 'medium', 
+  disabled = false,
+  className = '',
+  ...props 
+}) => {
+  const baseClasses = 'font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+  
+  const variants = {
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    secondary: 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500',
+    outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500',
+    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500'
+  };
+  
+  const sizes = {
+    small: 'px-3 py-1.5 text-sm',
+    medium: 'px-4 py-2 text-base',
+    large: 'px-6 py-3 text-lg'
+  };
+  
+  const disabledClasses = 'opacity-50 cursor-not-allowed';
+  
+  const classes = [
+    baseClasses,
+    variants[variant],
+    sizes[size],
+    disabled && disabledClasses,
+    className
+  ].filter(Boolean).join(' ');
+  
+  return (
+    <button 
+      className={classes} 
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Button;
+\`\`\`
+
+### 2. Uso del Componente Button
+
+\`\`\`jsx
+// Uso en tu aplicación
+import Button from './components/Button';
 
 function App() {
   return (
-    &lt;Suspense fallback={&lt;div&gt;Cargando...&lt;/div&gt;}&gt;
-      &lt;LazyComponent /&gt;
-    &lt;/Suspense&gt;
+    <div className="p-6 space-y-4">
+      <Button variant="primary" size="large">
+        Botón Primario
+      </Button>
+      
+      <Button variant="secondary" size="medium">
+        Botón Secundario
+      </Button>
+      
+      <Button variant="outline" size="small">
+        Botón Outline
+      </Button>
+      
+      <Button variant="danger" disabled>
+        Botón Deshabilitado
+      </Button>
+    </div>
   );
 }
+\`\`\`
 
-// Lazy loading de librerías
-async function loadChart() {
-  const { Chart } = await import('chart.js');
-  return Chart;
-}</code></pre>
+## Card Component con Variantes
 
-      <h4>Route-based Code Splitting</h4>
-      <pre><code>// Next.js
-const HomePage = dynamic(() =&gt; import('../pages/Home'));
-const AboutPage = dynamic(() =&gt; import('../pages/About'));
-
-// React Router
-const Home = lazy(() =&gt; import('./Home'));
-const About = lazy(() =&gt; import('./About'));</code></pre>
-
-      <h3>Optimización de CSS</h3>
-      <h4>Critical CSS</h4>
-      <pre><code>/* Inline critical CSS */
-&lt;style&gt;
-  /* Estilos above-the-fold */
-  .header { /* ... */ }
-  .hero { /* ... */ }
-&lt;/style&gt;
-
-&lt;!-- Load non-critical CSS asynchronously --&gt;
-&lt;link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"&gt;</code></pre>
-
-      <h4>CSS Containment</h4>
-      <pre><code>.card {
-  contain: layout style paint;
-  /* Aísla el componente para mejor performance */
-}
-
-.list-item {
-  contain: layout;
-  /* Solo aísla el layout */
-}</code></pre>
-
-      <h3>JavaScript Performance</h3>
-      <h4>Web Workers</h4>
-      <pre><code>// main.js
-const worker = new Worker('worker.js');
-worker.postMessage({ data: largeDataSet });
-worker.onmessage = (e) =&gt; {
-  console.log('Resultado:', e.data);
+\`\`\`jsx
+// components/Card.jsx
+const Card = ({ 
+  children, 
+  variant = 'default',
+  padding = 'medium',
+  className = '',
+  ...props 
+}) => {
+  const baseClasses = 'rounded-xl shadow-sm border';
+  
+  const variants = {
+    default: 'bg-white border-gray-200',
+    elevated: 'bg-white border-gray-200 shadow-lg',
+    dark: 'bg-gray-800 border-gray-700 text-white'
+  };
+  
+  const paddings = {
+    none: 'p-0',
+    small: 'p-4',
+    medium: 'p-6',
+    large: 'p-8'
+  };
+  
+  const classes = [
+    baseClasses,
+    variants[variant],
+    paddings[padding],
+    className
+  ].filter(Boolean).join(' ');
+  
+  return (
+    <div className={classes} {...props}>
+      {children}
+    </div>
+  );
 };
 
-// worker.js
-self.onmessage = function(e) {
-  const result = processLargeData(e.data);
-  self.postMessage(result);
-};</code></pre>
+const CardHeader = ({ children, className = '' }) => (
+  <div className={\`border-b border-gray-200 pb-4 mb-4 \${className}\`}>
+    {children}
+  </div>
+);
 
-      <h4>Debouncing y Throttling</h4>
-      <pre><code>// Debounce para búsquedas
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () =&gt; {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+const CardContent = ({ children, className = '' }) => (
+  <div className={className}>
+    {children}
+  </div>
+);
+
+const CardFooter = ({ children, className = '' }) => (
+  <div className={\`border-t border-gray-200 pt-4 mt-4 \${className}\`}>
+    {children}
+  </div>
+);
+
+Card.Header = CardHeader;
+Card.Content = CardContent;
+Card.Footer = CardFooter;
+
+export default Card;
+\`\`\`
+
+## Uso del Card Component
+
+\`\`\`jsx
+import Card from './components/Card';
+
+function UserProfile() {
+  return (
+    <Card variant="elevated" padding="large">
+      <Card.Header>
+        <h2 className="text-xl font-bold">Perfil de Usuario</h2>
+      </Card.Header>
+      
+      <Card.Content>
+        <div className="space-y-3">
+          <div>
+            <label className="text-sm text-gray-600">Nombre</label>
+            <p className="font-semibold">María González</p>
+          </div>
+          
+          <div>
+            <label className="text-sm text-gray-600">Email</label>
+            <p className="font-semibold">maria@ejemplo.com</p>
+          </div>
+        </div>
+      </Card.Content>
+      
+      <Card.Footer className="flex justify-end space-x-2">
+        <Button variant="outline" size="small">
+          Editar
+        </Button>
+        <Button variant="primary" size="small">
+          Guardar
+        </Button>
+      </Card.Footer>
+    </Card>
+  );
 }
+\`\`\`
 
-// Throttle para scroll events
-function throttle(func, limit) {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() =&gt; inThrottle = false, limit);
-    }
-  }
-}</code></pre>
+## Configuración de Tailwind para Componentes
 
-      <h3>Caching Strategies</h3>
-      <h4>Service Worker</h4>
-      <pre><code>// sw.js
-const CACHE_NAME = 'v1';
-const urlsToCache = [
-  '/',
-  '/styles.css',
-  '/script.js'
-];
-
-self.addEventListener('install', (event) =&gt; {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) =&gt; cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener('fetch', (event) =&gt; {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) =&gt; response || fetch(event.request))
-  );
-});</code></pre>
-
-      <h4>HTTP Caching Headers</h4>
-      <pre><code># .htaccess
-&lt;IfModule mod_expires.c&gt;
-  ExpiresActive On
-  ExpiresByType text/css "access plus 1 year"
-  ExpiresByType application/javascript "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/jpg "access plus 1 year"
-&lt;/IfModule&gt;</code></pre>
-
-      <h3>Resource Hints</h3>
-      <pre><code>&lt;!-- Preload critical resources --&gt;
-&lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;
-
-&lt;!-- Prefetch likely next pages --&gt;
-&lt;link rel="prefetch" href="/about"&gt;
-
-&lt;!-- Preconnect to external domains --&gt;
-&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
-
-&lt;!-- DNS prefetch --&gt;
-&lt;link rel="dns-prefetch" href="//example.com"&gt;</code></pre>
-
-      <h3>Herramientas de Medición</h3>
-      <ul>
-        <li><strong>Lighthouse</strong>: Auditoría completa de performance</li>
-        <li><strong>WebPageTest</strong>: Análisis detallado de carga</li>
-        <li><strong>Chrome DevTools</strong>: Performance tab para profiling</li>
-        <li><strong>Web Vitals Extension</strong>: Monitoreo en tiempo real</li>
-      </ul>
-
-      <h3>Checklist de Optimización</h3>
-      <ul>
-        <li>✅ Comprimir y minificar assets</li>
-        <li>✅ Optimizar imágenes (formato, tamaño, lazy loading)</li>
-        <li>✅ Implementar code splitting</li>
-        <li>✅ Configurar caching apropiado</li>
-        <li>✅ Usar CDN para assets estáticos</li>
-        <li>✅ Minimizar JavaScript no crítico</li>
-        <li>✅ Optimizar Web Fonts</li>
-        <li>✅ Implementar Service Worker</li>
-      </ul>
-
-      <h3>Conclusión</h3>
-      <p>La optimización de performance es un proceso continuo. Mide regularmente, identifica cuellos de botella y aplica las técnicas apropiadas. Recuerda que cada milisegundo cuenta para la experiencia de usuario.</p>
-    `,
-    category: "Performance",
+\`\`\`javascript
+// tailwind.config.js
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        }
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out'
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        }
+      }
+    },
   },
+  plugins: [],
+};
+\`\`\`
+
+## Conclusión
+
+Crear componentes reutilizables con Tailwind CSS requiere pensar en términos de variantes y composición. Estos patrones te permitirán mantener la consistencia visual mientras aprovechas la flexibilidad de Tailwind.`,
+    category: "CSS",
+    author: "David López",
+    tags: ["tailwind", "css", "componentes", "frontend", "design"],
+    readTime: "12 min",
+    date: "2024-01-10",
+    published: true
+  }
 ];
 
 export function getAllPosts(): Post[] {

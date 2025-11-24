@@ -1,5 +1,3 @@
-"use client"
-
 import { BlogCard } from "@/components/blog-card"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -24,7 +22,7 @@ export function PostsGrid({ posts, activeCategory }: PostsGridProps) {
     <div className="w-full max-w-7xl mx-auto">
       {/* Grid responsivo con tamaños fijos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:gap-8 auto-rows-fr">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={"sync"}>
           {posts.map((post, index) => (
             <motion.div
               key={`${activeCategory}-${post.slug}`}

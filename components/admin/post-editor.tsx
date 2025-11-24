@@ -16,11 +16,11 @@ import {
 import { ArrowLeft, Save, Eye, Plus, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { getPostBySlug } from "@/lib/posts";
-import { EditorToolbar } from "./editor-toolbar";
 import { ImageUploader } from "./image-uploader";
 import { CodeInserter } from "./code-inserter";
 import { PostPreview } from "./post-preview";
 import { categories, Category } from "../../lib/categories";
+import { EditorToolbar } from "./editor-toolbar";
 
 interface PostEditorProps {
   editingPostId?: string | null;
@@ -125,7 +125,7 @@ export function PostEditor({ editingPostId, onBack }: PostEditorProps) {
     setShowImageUploader(false);
   };
 
-  const insertFormatting = (type: string) => {
+  /* const insertFormatting = (type: string) => {
     const textarea = document.getElementById(
       "content-editor"
     ) as HTMLTextAreaElement;
@@ -164,6 +164,55 @@ export function PostEditor({ editingPostId, onBack }: PostEditorProps) {
           start + formattedText.length,
           start + formattedText.length
         );
+      }, 0);
+    }
+  }; */
+  const insertFormatting = (type: string) => {
+    const textarea = document.getElementById("content-editor") as HTMLTextAreaElement;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = content.substring(start, end);
+
+      let formattedText = "";
+      let cursorOffset = 0;
+
+      switch (type) {
+        case "bold":
+          formattedText = `**${selectedText || "texto en negrita"}**`;
+          cursorOffset = selectedText ? 0 : 2;
+          break;
+        case "italic":
+          formattedText = `*${selectedText || "texto en cursiva"}*`;
+          cursorOffset = selectedText ? 0 : 1;
+          break;
+        case "link":
+          formattedText = `[${selectedText || "texto del enlace"}](https://ejemplo.com)`;
+          cursorOffset = selectedText ? 0 : -1;
+          break;
+        case "list":
+          formattedText = `\n- ${selectedText || "elemento de lista"}\n`;
+          cursorOffset = selectedText ? 0 : 2;
+          break;
+        case "heading":
+          formattedText = `\n# ${selectedText || "Título"}\n`;
+          cursorOffset = selectedText ? 0 : 2;
+          break;
+        case "quote":
+          formattedText = `\n> ${selectedText || "Cita"}\n`;
+          cursorOffset = selectedText ? 0 : 2;
+          break;
+        default:
+          return;
+      }
+
+      const newContent = content.substring(0, start) + formattedText + content.substring(end);
+      setContent(newContent);
+
+      setTimeout(() => {
+        textarea.focus();
+        const newPosition = start + formattedText.length + cursorOffset;
+        textarea.setSelectionRange(newPosition, newPosition);
       }, 0);
     }
   };
@@ -440,12 +489,19 @@ Puedes usar Markdow
                       .length
                   }
                 </p>
-                <p>
+                {/* <p>
                   Bloques de código: {(content.match(/```/g) || []).length / 2}
                 </p>
                 <p>
                   Imágenes: {(content.match(/!\[.*?\]$$.*?$$/g) || []).length}
-                </p>
+                </p> */}
+                // En tu PostEditor, actualiza la sección de estadísticas
+<p>
+  Bloques de código: {((content.match(/```/g) || []).length / 2) || 0}
+</p>
+<p>
+  Imágenes: {(content.match(/!\[.*?\]\(.*?\)/g) || []).length}
+</p>
               </div>
             </CardContent>
           </Card>
