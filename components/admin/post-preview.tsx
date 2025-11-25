@@ -1,10 +1,11 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Save, Calendar, Clock, User } from "lucide-react"
 import { motion } from "framer-motion"
 import { CodeBlock } from "../code-block"
 import ReactMarkdown from 'react-markdown'
-import { MarkdownContent } from "../markdown-content"
 
 interface PostPreviewProps {
     title: string
@@ -98,8 +99,36 @@ export function PostPreview({
 
                 {/* Contenido */}
                 <div className="prose prose-lg prose-gray dark:prose-invert max-w-none">
+                    <ReactMarkdown
+                        components={{
+                            code(props) {
+                                const { children, className, node, ...rest } = props
+                                const match = /language-(\w+)/.exec(className || '')
+                                const code = String(children).replace(/\n$/, '')
 
-                    <MarkdownContent content={content} />
+                                // Determinar si es código inline o bloque
+                                const isInline = !className || !match
+
+                                if (!isInline && match) {
+                                    return (
+                                        <CodeBlock
+                                            code={code}
+                                            language={match[1]}
+                                            {...rest}
+                                        />
+                                    )
+                                }
+
+                                return (
+                                    <code className="px-1.5 py-0.5 bg-zinc-800 rounded text-sm" {...rest}>
+                                        {children}
+                                    </code>
+                                )
+                            }
+                        }}
+                    >
+                        {content}
+                    </ReactMarkdown>
                 </div>
             </motion.article>
         </div>

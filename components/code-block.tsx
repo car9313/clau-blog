@@ -1,12 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { coldarkDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { useTheme } from 'next-themes'
-import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Check, Copy } from 'lucide-react'
 
 interface CodeBlockProps {
     code: string
@@ -16,88 +12,97 @@ interface CodeBlockProps {
 
 export function CodeBlock({ code, language, fileName }: CodeBlockProps) {
     const [copied, setCopied] = useState(false)
-    const { theme } = useTheme()
 
     const copyToClipboard = async () => {
-        await navigator.clipboard.writeText(code)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        try {
+            await navigator.clipboard.writeText(code)
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        } catch (err) {
+            console.error('Error al copiar: ', err)
+            // Fallback para navegadores más antiguos
+            const textArea = document.createElement('textarea')
+            textArea.value = code
+            document.body.appendChild(textArea)
+            textArea.select()
+            try {
+                document.execCommand('copy')
+                setCopied(true)
+                setTimeout(() => setCopied(false), 2000)
+            } catch (fallbackErr) {
+                console.error('Fallback copy failed: ', fallbackErr)
+            }
+            document.body.removeChild(textArea)
+        }
     }
 
-    // Estilos diferentes para modo claro y oscuro
-    const isDark = theme === 'dark'
-    const syntaxStyle = isDark ? coldarkDark : prism
+    // Fallback simple si react-syntax-highlighter falla
+    const renderFallbackCode = () => (
+        <pre className="bg-zinc-900 text-zinc-100 p-4 rounded overflow-x-auto text-sm font-mono whitespace-pre-wrap">
+            <code>{code}</code>
+        </pre>
+    )
 
-    // Colores para modo claro
-    const lightColors = {
-        background: 'bg-gray-50',
-        border: 'border-gray-200',
-        headerBackground: 'bg-gray-100',
-        headerBorder: 'border-gray-200',
-        languageBadge: 'bg-gray-200 text-gray-700',
-        fileName: 'text-gray-600',
-        button: 'text-gray-500 hover:text-gray-700'
+    const renderCodeWithHighlighter = () => {
+        try {
+            // Importación dinámica para evitar errores en build
+            const { Prism: SyntaxHighlighter } = require('react-syntax-highlighter')
+            const { coldarkDark } = require('react-syntax-highlighter/dist/esm/styles/prism')
+
+            return (
+                <SyntaxHighlighter
+                    language={language}
+                    style={coldarkDark}
+                    customStyle={{
+                        margin: 0,
+                        padding: '1rem',
+                        background: 'transparent',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5',
+                    }}
+                    showLineNumbers
+                    wrapLines
+                >
+                    {code}
+                </SyntaxHighlighter>
+            )
+        } catch (error) {
+            console.warn('react-syntax-highlighter failed, using fallback:', error)
+            return renderFallbackCode()
+        }
     }
-
-    // Colores para modo oscuro
-    const darkColors = {
-        background: 'bg-zinc-900',
-        border: 'border-zinc-700',
-        headerBackground: 'bg-zinc-800',
-        headerBorder: 'border-zinc-700',
-        languageBadge: 'bg-zinc-700 text-zinc-300',
-        fileName: 'text-zinc-400',
-        button: 'text-zinc-400 hover:text-zinc-100'
-    }
-
-    const colors = isDark ? darkColors : lightColors
 
     return (
-        <div className={`relative my-6 rounded-lg border ${colors.background} ${colors.border}`}>
-            {/* Header del bloque de código */}
-            <div className={`flex items-center justify-between px-4 py-2 border-b ${colors.headerBorder} ${colors.headerBackground}`}>
+        <div className="relative my-6 rounded-lg border bg-zinc-950 group">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-700">
                 <div className="flex items-center gap-2">
                     {fileName && (
-                        <span className={`text-sm ${colors.fileName}`}>
-                            {fileName}
-                        </span>
+                        <span className="text-sm text-zinc-400">{fileName}</span>
                     )}
-                    <span className={`text-xs px-2 py-1 rounded ${colors.languageBadge}`}>
+                    <span className="text-xs px-2 py-1 bg-zinc-800 rounded text-zinc-300">
                         {language}
                     </span>
                 </div>
                 <Button
-                    variant="ghost"
+                    variant="ghost" // Cambiado de "link" a "ghost"
                     size="sm"
                     onClick={copyToClipboard}
-                    className={`h-8 px-2 ${colors.button}`}
+                    className="h-8 px-3 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-all duration-200 flex items-center gap-2"
                 >
                     {copied ? (
-                        <Check className="h-4 w-4" />
+                        <>
+                            <Check className="h-4 w-4" />
+                            <span className="text-xs">Copiado!</span>
+                        </>
                     ) : (
-                        <Copy className="h-4 w-4" />
+                        <>
+                            <Copy className="h-4 w-4" />
+                            <span className="text-xs">Copiar</span>
+                        </>
                     )}
                 </Button>
             </div>
-
-            {/* Código con sintaxis */}
-            <SyntaxHighlighter
-                language={language}
-                style={syntaxStyle}
-                customStyle={{
-                    margin: 0,
-                    padding: '1rem',
-                    background: 'transparent',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5',
-                    border: 'none',
-                    borderRadius: '0 0 0.5rem 0.5rem'
-                }}
-                showLineNumbers
-                wrapLines
-            >
-                {code}
-            </SyntaxHighlighter>
+            {renderCodeWithHighlighter()}
         </div>
     )
 }
